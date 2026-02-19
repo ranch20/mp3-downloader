@@ -4,7 +4,8 @@ import re
 import subprocess
 
 # Ensure folder exists
-os.makedirs("music/Library", exist_ok=True)
+os.makedirs("output", exist_ok=True)
+os.makedirs("data", exist_ok=True)
 
 
 def clean_title(title):
@@ -12,13 +13,13 @@ def clean_title(title):
     return re.sub(r'[\\/*?:"<>|]', "", title)
 
 
-def download_mp3(url_or_search):
+def download_mp3(url_or_search, ffmpeg_location):
     print("Downloading audio...")
 
     ydl_opts = {
     'format': 'bestaudio/best',
-    'outtmpl': 'music/Library/%(title)s.%(ext)s',
-    'ffmpeg_location': r'C:\Users\riley\Desktop\ffmpeg-8.0.1-essentials_build\ffmpeg-8.0.1-essentials_build\bin',
+    'outtmpl': 'output/%(title)s.%(ext)s',
+    'ffmpeg_location': ffmpeg_location,
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'mp3',
@@ -27,7 +28,7 @@ def download_mp3(url_or_search):
 }
 
 
-    # Allow search queries like "ytsearch: lil uzi malfunction"
+    # Allow search queries
     if not url_or_search.startswith("http"):
         url_or_search = f"ytsearch1:{url_or_search}"
 
@@ -49,6 +50,22 @@ def open_containing_folder(file_path):
     subprocess.run(['explorer', '/select,', file_path])
 
 
-# Example usage
-title = download_mp3("https://youtu.be/ba0yXl6OPSA?si=Olx1-LNopJ381NuK")
-open_containing_folder(f"music/Library/{title}.mp3")
+def main():
+    path = str
+
+    with open("data/ffmpeg_location.txt", "a") as f:
+        pass
+
+    with open("data/ffmpeg_location.txt", "r") as path_file:
+        path = path_file.read()
+        if not path: 
+            path_file.close()
+            with open("data/ffmpeg_location.txt", "w") as path_file:
+                path = (input("Enter FFmpeg path: "))
+                path_file.write(path)
+                path_file.close()
+
+
+    link = input("Enter youtube link: ")
+    title = download_mp3(link, path)
+    open_containing_folder(f"output/{title}.mp3")
