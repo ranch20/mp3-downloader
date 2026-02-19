@@ -68,4 +68,4 @@ def main():
 
     link = input("Enter youtube link: ")
     title = download_mp3(link, path)
-    open_containing_folder(f"output/{title}.mp3")
+    open_containing_folder(f"mp3/output/{title}.mp3")
