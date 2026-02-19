@@ -39,7 +39,8 @@ def download_mp3(url_or_search, ffmpeg_location):
         if 'entries' in info:
             info = info['entries'][0]
 
-        title = clean_title(info['title'])
+        #title = clean_title(info['title'])
+        title = info['title']
         print(f"Downloaded: {title}.mp3")
 
     return title
@@ -50,8 +51,9 @@ def open_containing_folder(file_path):
     subprocess.run(['explorer', '/select,', file_path])
 
 
-def main():
+def main(song = None, open_folder=False):
     path = str
+    link = str
 
     with open("data/ffmpeg_location.txt", "a") as f:
         pass
@@ -66,6 +68,9 @@ def main():
                 path_file.close()
 
 
-    link = input("Enter youtube link: ")
+    if song: link = song
+    else: link = input("Enter youtube link or search: ")
+    
     title = download_mp3(link, path)
-    open_containing_folder(f"mp3/output/{title}.mp3")
+
+    if open_folder: open_containing_folder(f"output/{title}.mp3")

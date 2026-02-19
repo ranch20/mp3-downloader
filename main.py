@@ -1,3 +1,3 @@
 import src.downloader
 
-src.downloader.main()
+src.downloader.main(open_folder=True)
