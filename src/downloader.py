@@ -45,6 +45,9 @@ def open_containing_folder(file_path):
     subprocess.run(['explorer', '/select,', file_path])
 
 
-def main(song = None, open_folder=False):    
+def main(song = None, output_folder=None, open_folder=False):    
     title = download_mp3(song)
-    if open_folder: open_containing_folder(f"output/{title}.mp3")
+    if not output_folder:
+        os.makedirs("output", exist_ok=True)
+        output_folder = "output"
+    if open_folder: open_containing_folder(f"{output_folder}/{title}.mp3")
